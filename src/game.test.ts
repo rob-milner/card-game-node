@@ -8,7 +8,9 @@ import {
   playRound,
   Deck,
   Players,
-} from "./main";
+} from "./game";
+
+console.log = jest.fn();
 
 const orderedDeck = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
@@ -114,8 +116,8 @@ describe("compareScore", () => {
 describe("awardPoint", () => {
   it("increases the score of the winning player", () => {
     let players = {
-      1: { name: "p1", score: 0, deck: [] },
-      2: { name: "p2", score: 0, deck: [] },
+      1: { name: "p1", score: 0, deck: [], card: 0 },
+      2: { name: "p2", score: 0, deck: [], card: 0 },
     } as Players;
 
     players = awardPointToPlayer(players, 1);
@@ -136,8 +138,8 @@ describe("playRound", () => {
 
   beforeEach(() => {
     players = {
-      1: { name: "p1", score: 0, deck: [1, 2] },
-      2: { name: "p2", score: 0, deck: [3, 4] },
+      1: { name: "p1", score: 0, deck: [1, 2], card: 0 },
+      2: { name: "p2", score: 0, deck: [3, 4], card: 0 },
     };
   });
 
@@ -148,8 +150,8 @@ describe("playRound", () => {
 
   it("signals the game has ended when there are no more cards to play", () => {
     const players = {
-      1: { name: "p1", score: 0, deck: [1] },
-      2: { name: "p2", score: 0, deck: [2] },
+      1: { name: "p1", score: 0, deck: [1], card: 0 },
+      2: { name: "p2", score: 0, deck: [2], card: 0 },
     };
     const { gameOver } = playRound(players);
     expect(gameOver).toBe(true);
