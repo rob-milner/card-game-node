@@ -1,9 +1,13 @@
-"use strict";
-
-import { emitKeypressEvents } from "readline";
+import { emitKeypressEvents, Key } from "readline";
+import { startInputLoop } from "./input";
+import {
+  displayEndingMessage,
+  displayResultsTableHeader,
+  displayRoundStatus,
+  displayWelcomeMessage,
+} from "./output";
 
 const DECK_SIZE = 52;
-let round = 0;
 
 export type Deck = number[];
 
@@ -56,6 +60,10 @@ export const drawCard = (deck: Deck): DrawCardResult => {
 };
 
 export const compareScore = (player1: number, player2: number): number => {
+  if (player1 === player2) {
+    return 0;
+  }
+
   return player1 > player2 ? 1 : 2;
 };
 
@@ -75,11 +83,7 @@ export const playRound = (players: Players): PlayRoundResult => {
   p[2] = { ...p[2], ...p2Draw };
   const gameOver = p[1].deck.length === 0;
 
-  console.log(
-    `\nround ${String(++round).padStart(2, "0")}\t${p[1].card}\t\t${
-      p[2].card
-    }\t\t${p[winner].name}`
-  );
+  displayRoundStatus(p, winner);
 
   return { players: p, gameOver };
 };
@@ -102,9 +106,7 @@ export const playGame = () => {
     },
   } as Players;
 
-  console.log(
-    "Welcome to highest card wins. Two players will take turns drawing cards and the highest score gets a point.\nAt the end of the game, the player with the most points wins. Press space to begin."
-  );
+  displayWelcomeMessage();
 
   emitKeypressEvents(process.stdin);
   if (process.stdin.isTTY) {
@@ -112,23 +114,21 @@ export const playGame = () => {
   }
 
   let result: PlayRoundResult;
-  process.stdin.on("keypress", (_, key) => {
+
+  startInputLoop((key: Key) => {
+    const keyName = key?.name ?? "";
     if (key?.name === "escape") {
       process.exit();
-    } else if (["space", "return"].includes(key?.name)) {
+    } else if (["space", "return"].includes(keyName)) {
       if (players[1].card === 0) {
-        console.log(`\n\t\t${players[1].name}\t${players[2].name}\twinner`);
+        displayResultsTableHeader(players);
       }
       result = playRound(players);
       players = result.players;
 
       if (result.gameOver) {
-        const winner = compareScore(players[1].score, players[2].score);
-        console.log(
-          `\nThe game has finished!\n\n${players[1].name} got ${players[1].score}, ${players[2].name} got ${players[2].score}.`
-        );
-        console.log(`\nThat means ${players[winner].name} is the winner!`);
-        console.log("\nThanks for playing!");
+        displayEndingMessage(players);
+
         process.stdin.setRawMode(false);
         process.exit();
       }
