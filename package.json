@@ -1,0 +1,42 @@
+{
+  "name": "card-game-node",
+  "version": "1.0.0",
+  "description": "A node-based implementation of a card game where a shuffled deck is split between two players, cards are drawn with the highest value scoring a point. When the cards have run out, the player with the highest score wins.",
+  "main": "main.ts",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "build": "npx tsc",
+    "lint": "eslint . --fix",
+    "run:ts": "npx ts-node src/main.ts",
+    "run:js": "npx node dist/main.js",
+    "format:write": "npx prettier --write .",
+    "format:check": "npx prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rob-milner/card-game-node.git"
+  },
+  "author": "Rob Milner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rob-milner/card-game-node/issues"
+  },
+  "homepage": "https://github.com/rob-milner/card-game-node#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-typescript": "^7.17.12",
+    "@tsconfig/node16": "^1.0.3",
+    "@types/jest": "^28.1.3",
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "babel-jest": "^28.1.1",
+    "eslint": "^8.18.0",
+    "jest": "^28.1.1",
+    "prettier": "2.7.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4"
+  }
+}

@@ -1,0 +1,3 @@
+#ignore artefacts:
+build
+coverage
